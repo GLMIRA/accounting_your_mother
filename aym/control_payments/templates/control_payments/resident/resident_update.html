@@ -1,0 +1,15 @@
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" maxlength="100" required value="{{resident.name}}">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" maxlength="100" required value="{{resident.email}}">
+        <label for="age">Age:</label>
+        <input type="number" name="age" id="age" min="0" max="150" required value="{{resident.age}}">
+        <label for="discord_nickname">Discord Nickname:</label>
+        <input type="text" name="discord_nickname" id="discord_nickname" maxlength="100" required
+            value="{{resident.discord_nickname}}">
+    </fieldset>
+    <input type="submit" value="Submit">
+</form>
