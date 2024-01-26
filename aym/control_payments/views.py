@@ -1,63 +1,67 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 from django.template import loader
-from .models import Resident
+from .models import UserProfile
+from .forms import (
+    UserProfileFormUpdate,
+    UserProfileFormInput,
+)
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return HttpResponse("Bem vindo ao controle de pagamentos!")
+    return render(request, "control_payments/index.html")
 
 
-def resident_all(request):
-    resident_list = Resident.objects.all().order_by("name")
-    template = loader.get_template("control_payments/resident/resident_all.html")
+### USER PROFILE
+@login_required(login_url="/accounts/login/")
+def user_profile_all(request):
+    user_profile_list = UserProfile.objects.all().order_by("user__username")
+    template = loader.get_template(
+        "control_payments/user_profile/user_profile_all.html"
+    )
     context = {
-        "resident_list": resident_list,
+        "user_profile_list": user_profile_list,
     }
     return HttpResponse(template.render(context, request))
 
 
-def resident_get(request, resident_id):
-    resident = Resident.objects.get(pk=resident_id)
-    # TODO: fazer o template de mostrar resident
-    # template = loader.get_template("control_payments/resident_id.html")
-    # context = {
-    #     "resident": resident,
-    # }
-    result = f"Resident: {resident.name} - {resident.email}"
-    return HttpResponse(result)
-
-
-def resident_input(request: HttpRequest):
-    if request.method == "GET":
-        return render(
-            request, "control_payments/resident_input.html"
-        )  # TODO: alterar o endereço do template
-    resident = Resident(
-        cpf=request.POST["cpf"],
-        name=request.POST["name"],
-        email=request.POST["email"],
-        age=request.POST["age"],
-        discord_nickname=request.POST["discord_nickname"],
+@login_required(login_url="/accounts/login/")
+def user_profile_input(request: HttpRequest):
+    if request.method == "POST":
+        form = UserProfileFormInput(request.POST)
+        if form.is_valid():
+            user_profile = UserProfile()
+            user_profile.user = form.cleaned_data["user"]
+            user_profile.cpf = form.cleaned_data["cpf"]
+            user_profile.birth_date = form.cleaned_data["birth_date"]
+            user_profile.discord_nickname = form.cleaned_data["discord_nickname"]
+            user_profile.save()
+            return HttpResponse("User profile save!")
+    else:
+        form = UserProfileFormInput()
+    return render(
+        request=request,
+        template_name="control_payments/user_profile/user_profile_input.html",
+        context={"form": form},
     )
-    resident.save()
-    return HttpResponse("Resident saved!")
 
 
-def resident_update(request: HttpRequest, resident_id):
-    resident = Resident.objects.get(pk=resident_id)
-    if request.method == "GET":
-        context = {
-            "resident": resident,
-        }
-        return render(
-            request=request,
-            context=context,
-            template_name="control_payments/resident_update.html",  # TODO: alterar o endereço do template
-        )
-    resident.name = request.POST["name"]
-    resident.email = request.POST["email"]
-    resident.age = request.POST["age"]
-    resident.discord_nickname = request.POST["discord_nickname"]
-    resident.save()
-    return HttpResponse("Resident updated!")
+@login_required(login_url="/accounts/login/")
+def user_profile_update(request: HttpRequest, user_id: int):
+    user_profile = UserProfile.objects.get(pk=user_id)
+    if request.method == "POST":
+        form = UserProfileFormUpdate(request.POST, instance=user_profile)
+        if form.is_valid():
+            user_profile.cpf = form.cleaned_data["cpf"]
+            user_profile.birth_date = form.cleaned_data["birth_date"]
+            user_profile.discord_nickname = form.cleaned_data["discord_nickname"]
+            user_profile.save()
+            return HttpResponse("User profile updated!")
+    else:
+        form = UserProfileFormUpdate(instance=user_profile)
+    return render(
+        request=request,
+        template_name="control_payments/user_profile/user_profile_update.html",
+        context={"user": user_profile.user, "form": form},
+    )

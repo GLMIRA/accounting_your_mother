@@ -1,0 +1,12 @@
+<!-- aym/control_payments/templates/control_payments/user_profile/user_profile_input.html -->
+{% extends "control_payments_base.html" %}
+{% load static %}
+{% block content %}
+{{ block.super }}
+<h5>Create a User Profile</h5>
+<form action="{% url 'control_payments:user_profile/input' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
