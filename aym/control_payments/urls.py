@@ -5,12 +5,12 @@ from . import views
 app_name = "control_payments"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("resident/all", views.resident_all, name="resident/all"),
-    path("resident/get/<int:resident_id>", views.resident_get, name="resident/get"),
-    path("resident/input", views.resident_input, name="resident/input"),
+    ## USER PROFILE
+    path("user_profile/all", views.user_profile_all, name="user_profile/all"),
+    path("user_profile/input", views.user_profile_input, name="user_profile/input"),
     path(
-        "resident/update/<int:resident_id>",
-        views.resident_update,
-        name="resident/update",
+        "user_profile/update/<int:user_id>",
+        views.user_profile_update,
+        name="user_profile/update",
     ),
 ]

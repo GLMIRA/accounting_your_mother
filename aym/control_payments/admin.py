@@ -7,7 +7,7 @@ from .models import (
     Apportionment,
     DebtType,
     Payment,
-    Resident,
+    UserProfile,
 )
 
 admin.site.register(ApportionmentRules)
@@ -16,4 +16,4 @@ admin.site.register(Debts)
 admin.site.register(Apportionment)
 admin.site.register(DebtType)
 admin.site.register(Payment)
-admin.site.register(Resident)
+admin.site.register(UserProfile)

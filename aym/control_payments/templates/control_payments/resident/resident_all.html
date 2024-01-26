@@ -1,9 +1,0 @@
-{% if resident_list %}
-<ul>
-    {% for resident in resident_list %}
-    <li><a href="get/{{resident.cpf}}">{{ resident.cpf }}</a>, {{ resident.name }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No residents are available.</p>
-{% endif %}

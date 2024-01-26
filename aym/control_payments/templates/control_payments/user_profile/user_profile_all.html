@@ -1,0 +1,33 @@
+<!-- aym/control_payments/templates/control_payments/user_profile/user_profile_all.html -->
+{% extends "control_payments_base.html" %}
+{% load static %}
+{% block content %}
+{{ block.super }}
+<h5>List of User Profiles</h5>
+{% if user_profile_list %}
+<table>
+    <thead>
+        <tr>
+            <th>CPF</th>
+            <th>User</th>
+            <th>Birth Date</th>
+            <th>Discord</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user_profile in user_profile_list %}
+        <tr>
+            <td>{{ user_profile.cpf }}</td>
+            <td>{{ user_profile.user }}</td>
+            <td>{{ user_profile.birth_date }}</td>
+            <td>{{ user_profile.discord_nickname }}</td>
+            <td><a href="update/{{user_profile.id}}">Update this</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No User Profile are available. <a href="input">Create it!</a></p>
+{% endif %}
+{% endblock %}
