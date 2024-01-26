@@ -6,19 +6,35 @@ from django.core.validators import (
     MaxValueValidator,
     RegexValidator,
 )
+from django.contrib.auth.models import User
+
 from . import validators as custom_validators
 
 
-class Resident(models.Model):
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        verbose_name="User",
+        help_text="User of the user profile",
+        null=False,
+        blank=False,
+        db_column="user",
+        db_comment="User of the user profile",
+        on_delete=models.CASCADE,
+        error_messages={
+            "blank": "User cannot be blank",
+            "null": "User cannot be null",
+        },
+    )
     cpf = models.CharField(
-        primary_key=True,
         verbose_name="CPF",
-        help_text="CPF of the resident",
+        help_text="CPF of the user",
         max_length=11,
         null=False,
         blank=False,
+        unique=True,
         db_column="cpf",
-        db_comment="CPF of the resident",
+        db_comment="CPF of the user",
         validators=[custom_validators.validate_cpf],
         error_messages={
             "blank": "CPF cannot be blank",
@@ -26,61 +42,28 @@ class Resident(models.Model):
             "max_length": "CPF cannot be longer than 11 characters",
         },
     )
-    name = models.CharField(
-        verbose_name="Complete name",
-        help_text="Name of the resident",
-        max_length=255,
+    birth_date = models.DateField(
+        verbose_name="Birth date",
+        help_text="Birth date of the user",
         null=False,
         blank=False,
-        db_column="name",
-        db_comment="Name of the resident",
-        validators=[
-            MinLengthValidator(10, message="Name must have at least 10 characters")
-        ],
+        db_column="birth_date",
+        db_comment="Birth date of the user",
+        validators=[custom_validators.validate_birth_date],
         error_messages={
-            "blank": "Name cannot be blank",
-            "null": "Name cannot be null",
-            "max_length": "Name cannot be longer than 255 characters",
-        },
-    )
-    email = models.EmailField(
-        verbose_name="Email",
-        help_text="Email of the resident",
-        max_length=255,
-        null=False,
-        blank=False,
-        db_column="email",
-        db_comment="Email of the resident",
-        error_messages={
-            "blank": "Email cannot be blank",
-            "null": "Email cannot be null",
-            "max_length": "Email cannot be longer than 255 characters",
-        },
-    )
-    age = models.IntegerField(
-        verbose_name="Age",
-        help_text="Age of the resident",
-        null=False,
-        blank=False,
-        db_column="age",
-        db_comment="Age of the resident",
-        validators=[
-            MinValueValidator(17, message="Age must be at least 17"),
-            MaxValueValidator(100, message="Age must be at most 100"),
-        ],
-        error_messages={
-            "blank": "Age cannot be blank",
-            "null": "Age cannot be null",
+            "blank": "Birth date cannot be blank",
+            "null": "Birth date cannot be null",
         },
     )
     discord_nickname = models.CharField(
         verbose_name="Discord nickname",
-        help_text="Discord nickname of the resident",
+        help_text="Discord nickname of the user",
         max_length=255,
         null=False,
         blank=False,
+        unique=True,
         db_column="discord_nickname",
-        db_comment="Discord nickname of the resident",
+        db_comment="Discord nickname of the user",
         validators=[
             MinLengthValidator(
                 3, message="Discord nickname must have at least 3 characters"
@@ -98,11 +81,11 @@ class Resident(models.Model):
     )
     active = models.BooleanField(
         verbose_name="Active",
-        help_text="Active of the resident",
+        help_text="Active of the user",
         null=False,
         blank=False,
         db_column="active",
-        db_comment="Active of the resident",
+        db_comment="Active of the user",
         default=True,
         error_messages={
             "blank": "Active cannot be blank",
@@ -111,12 +94,12 @@ class Resident(models.Model):
     )
 
     class Meta:
-        db_table = "resident"
-        verbose_name = "Resident"
-        verbose_name_plural = "Residents"
+        db_table = "user_profile"
+        verbose_name = "User profile"
+        verbose_name_plural = "User profiles"
 
     def __str__(self):
-        return f"{self.__class__}:{self.cpf} - {self.name}"
+        return f"{self.__class__}:{self.cpf} - {self.user}"
 
 
 class DebtType(models.Model):
@@ -224,18 +207,18 @@ class ApportionmentRules(models.Model):
             "null": "Debt type cannot be null",
         },
     )
-    resident = models.ForeignKey(
-        Resident,
-        verbose_name="Resident",
-        help_text="Resident of the apportionment rule",
+    user = models.ForeignKey(
+        User,
+        verbose_name="User",
+        help_text="User of the apportionment rule",
         null=False,
         blank=False,
-        db_column="resident",
-        db_comment="Resident of the apportionment rule",
+        db_column="user",
+        db_comment="user of the apportionment rule",
         on_delete=models.CASCADE,
         error_messages={
-            "blank": "Resident cannot be blank",
-            "null": "Resident cannot be null",
+            "blank": "User cannot be blank",
+            "null": "User cannot be null",
         },
     )
     percentage = models.DecimalField(
@@ -278,7 +261,7 @@ class ApportionmentRules(models.Model):
         verbose_name_plural = "Apportionment rules"
 
     def __str__(self):
-        return f"{self.__class__}:{self.id} - {self.debt_type} - {self.resident}"
+        return f"{self.__class__}:{self.id} - {self.debt_type} - {self.user}"
 
 
 class Debts(models.Model):
@@ -398,18 +381,18 @@ class Apportionment(models.Model):
             "null": "Debt cannot be null",
         },
     )
-    resident = models.ForeignKey(
-        Resident,
-        verbose_name="Resident",
-        help_text="Resident of the apportionment",
+    user = models.ForeignKey(
+        User,
+        verbose_name="User",
+        help_text="User of the apportionment",
         null=False,
         blank=False,
-        db_column="resident",
-        db_comment="Resident of the apportionment",
+        db_column="user",
+        db_comment="User of the apportionment",
         on_delete=models.CASCADE,
         error_messages={
-            "blank": "Resident cannot be blank",
-            "null": "Resident cannot be null",
+            "blank": "User cannot be blank",
+            "null": "User cannot be null",
         },
     )
     value = models.DecimalField(
@@ -452,7 +435,7 @@ class Apportionment(models.Model):
         verbose_name_plural = "Apportionments"
 
     def __str__(self):
-        return f"{self.__class__}:{self.id} - {self.debt} - {self.resident}"
+        return f"{self.__class__}:{self.id} - {self.debt} - {self.user}"
 
 
 class Payment(models.Model):
@@ -471,18 +454,18 @@ class Payment(models.Model):
             "null": "ID cannot be null",
         },
     )
-    resident = models.ForeignKey(
-        Resident,
-        verbose_name="Resident",
-        help_text="Resident of the payment",
+    user = models.ForeignKey(
+        User,
+        verbose_name="User",
+        help_text="User of the payment",
         null=False,
         blank=False,
-        db_column="resident",
-        db_comment="Resident of the payment",
+        db_column="user",
+        db_comment="User of the payment",
         on_delete=models.CASCADE,
         error_messages={
-            "blank": "Resident cannot be blank",
-            "null": "Resident cannot be null",
+            "blank": "User cannot be blank",
+            "null": "User cannot be null",
         },
     )
     pay_date = models.DateField(
@@ -524,7 +507,7 @@ class Payment(models.Model):
         verbose_name_plural = "Payments"
 
     def __str__(self):
-        return f"{self.__class__}:{self.id} - {self.resident}"
+        return f"{self.__class__}:{self.id} - {self.user}"
 
 
 class DebtCollection(models.Model):
@@ -543,18 +526,18 @@ class DebtCollection(models.Model):
             "null": "ID cannot be null",
         },
     )
-    resident = models.ForeignKey(
-        Resident,
-        verbose_name="Resident",
-        help_text="Resident of the debt collection",
+    user = models.ForeignKey(
+        User,
+        verbose_name="User",
+        help_text="User of the debt collection",
         null=False,
         blank=False,
-        db_column="resident",
-        db_comment="Resident of the debt collection",
+        db_column="user",
+        db_comment="User of the debt collection",
         on_delete=models.CASCADE,
         error_messages={
-            "blank": "Resident cannot be blank",
-            "null": "Resident cannot be null",
+            "blank": "User cannot be blank",
+            "null": "User cannot be null",
         },
     )
     debt_collection_date = models.DateField(
@@ -600,4 +583,4 @@ class DebtCollection(models.Model):
         verbose_name_plural = "Debt collections"
 
     def __str__(self):
-        return f"{self.__class__}:{self.id} - {self.resident}"
+        return f"{self.__class__}:{self.id} - {self.user}"

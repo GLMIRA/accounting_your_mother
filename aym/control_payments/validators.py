@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from datetime import date
 
 
 def validate_cpf(value):
@@ -10,3 +11,8 @@ def validate_cpf(value):
     digit_2 = (product_sum_2 * 10 % 11) % 10
     if int(value[9]) != digit_1 or int(value[10]) != digit_2:
         raise ValidationError("CPF is invalid")
+
+
+def validate_birth_date(value):
+    if value > date.today():
+        raise ValidationError("Birth date can't be in the future")
