@@ -14,6 +14,8 @@ export DJANGO_DATABASE='tests' && python manage.py runserver
 ## URLS:
 - Django Admin: `http://127.0.0.1:8000/admin/`
 - Django DOCS: `https://docs.djangoproject.com/en/5.0/intro/tutorial01/`
+- Habilitar o login: `https://learndjango.com/tutorials/django-login-and-logout-tutorial`
+- Extender o Model User: `https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone`
 
 
 ## ordem das coisas
@@ -84,3 +86,5 @@ aym/
 db/     <----------------- aqui
 ```
 2. Rodar o comando `docker-compose up -d --build` dentro da pasta `aym` para subir os containers do projeto
+
+
