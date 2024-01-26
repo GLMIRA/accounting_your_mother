@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 from django.template import loader
-from .models import Resident
+from .models import Resident, DebtType
 
 
 def index(request):
@@ -31,7 +31,7 @@ def resident_get(request, resident_id):
 def resident_input(request: HttpRequest):
     if request.method == "GET":
         return render(
-            request, "control_payments/resident_input.html"
+            request, "control_payments/resident/resident_input.html"
         )  # TODO: alterar o endereço do template
     resident = Resident(
         cpf=request.POST["cpf"],
@@ -61,3 +61,16 @@ def resident_update(request: HttpRequest, resident_id):
     resident.discord_nickname = request.POST["discord_nickname"]
     resident.save()
     return HttpResponse("Resident updated!")
+
+
+def debt_type_input(request: HttpRequest):
+    if request.method == "GET":
+        return render(request, "control_payments/debt_type/debt_type_input.html")
+    debt_type = DebtType(
+        name=request.POST["name"], description=request.POST["descripition"]
+    )
+    debt_type.save()
+    return HttpResponse("new type of debt successfully saved")
+
+
+# def debt_type_get()

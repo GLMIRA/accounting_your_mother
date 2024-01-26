@@ -1,0 +1,10 @@
+<form action="{% url 'control_payments:debt_type/input' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" maxlength="30" required>
+        <label for=" description">Description</label>
+        <input type="text" name=" description" id=" description" maxlength="255" required>
+    </fieldset>
+    <input type="submit" value="submit">
+</form>
