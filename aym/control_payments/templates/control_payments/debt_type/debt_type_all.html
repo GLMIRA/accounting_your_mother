@@ -1,0 +1,9 @@
+{% if debt_type_list %}
+<ul>
+    {% for debt_type in debt_type_list %}
+    <li><a href="get/{{debt_type.name}}">{{debt_type.name}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No debt type are available.</p>
+{% endif %}

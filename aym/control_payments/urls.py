@@ -14,4 +14,5 @@ urlpatterns = [
         name="resident/update",
     ),
     path("debt_type/input", views.debt_type_input, name="debt_type/input"),
+    path("debt_type/all", views.debt_type_all, name="debt_type/all"),
 ]
