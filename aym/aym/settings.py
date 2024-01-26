@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 
@@ -56,7 +56,7 @@ ROOT_URLCONF = "aym.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [f"{BASE_DIR}/aym/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,24 +69,17 @@ TEMPLATES = [
     },
 ]
 
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
 WSGI_APPLICATION = "aym.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# *** SQLite3 ***
-# Para usar o sqlite3, para o desenvolvimento local, pode descomentar as linhas abaixo
-# e comentar as linhas referentes ao mariadb
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-# *** MariaDB ***
-DATABASES = {
+DATABASES_AVAILABLE = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": config("MYSQL_DATABASE"),
@@ -94,8 +87,14 @@ DATABASES = {
         "PASSWORD": config("MYSQL_PASSWORD"),
         "HOST": config("MYSQL_HOST"),
         "PORT": config("MYSQL_PORT"),
-    }
+    },
+    "tests": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
 }
+database = os.environ.get("DJANGO_DATABASE", "default")
+DATABASES = {"default": DATABASES_AVAILABLE[database]}
 
 
 # Password validation
