@@ -1,6 +1,11 @@
 
 # Comamando uteis:
 ## DJANGO
+
+**para rodar o projeto usando como base de dados do sqlite3, antes de dar os comandos abaixo setar a vaiavel de ambiente `DJANGO_DATABASE='tests'` usando o comando `export`. Caso isso não seja feito o projeto vai tentar encontrar o servidor do mariadb**
+```bash
+export DJANGO_DATABASE='tests' && python manage.py runserver
+```
 - Rodar o servidor: `python manage.py runserver`
 - Migrações: `python manage.py makemigrations` e `python manage.py migrate`
 - criar o super usuário: `python manage.py createsuperuser`
@@ -61,7 +66,7 @@ python -c "from django.core.management.utils import get_random_secret_key; print
 1. Instalar o docker e o docker-compose
 2. Criar o diretorio de dados do mysql:
 ```bash
-# dentro da pasta aym criar o diretorio db
+# dentro da pasta raiz do projeto criar o diretorio db
 mkdir db
 # caso esteja usando linux, dar permissão de escrita para o usuario do docker
 sudo chown -R 777 ./db
@@ -71,11 +76,11 @@ o resultado de como deve ficar a estrutura de pastas:
 aym/
     aym/
     control_payments/
-    db/     <----------------- aqui
     .env
     docker-compose.yml
     Dockerfile
     manage.py
     requirements.txt
+db/     <----------------- aqui
 ```
 2. Rodar o comando `docker-compose up -d --build` dentro da pasta `aym` para subir os containers do projeto
