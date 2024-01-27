@@ -15,4 +15,9 @@ urlpatterns = [
     ),
     path("debt_type/input", views.debt_type_input, name="debt_type/input"),
     path("debt_type/all", views.debt_type_all, name="debt_type/all"),
+    path(
+        "debt_type/update/<str:debt_type_id>",
+        views.debt_type_update,
+        name="debt_typ/update",
+    ),
 ]

@@ -65,7 +65,7 @@ def debt_type_input(request: HttpRequest):
     if request.method == "GET":
         return render(request, "control_payments/debt_type/debt_type_input.html")
     debt_type = DebtType(
-        name=request.POST["name"], description=request.POST["description"]
+        name=request.POST["name"], description=request.POST["description_debt_typ"]
     )
     debt_type.save()
     return HttpResponse("new type of debt successfully saved")
@@ -76,3 +76,20 @@ def debt_type_all(request: HttpResponse):
     template = loader.get_template("control_payments/debt_type/debt_type_all.html")
     context = {"debt_type_list": debt_type_list}
     return HttpResponse(template.render(context, request))
+
+
+def debt_type_update(request: HttpRequest, debt_type_id: DebtType):
+    debt_type = DebtType.objects.get(pk=debt_type_id)
+    if request.method == "GET":
+        context = {
+            "debt_type": debt_type,
+        }
+        return render(
+            request=request,
+            context=context,
+            template_name="control_payments/debt_type/debt_type_update.html",
+        )
+    debt_type.name = request.POST["name"]
+    debt_type.description = request.POST["debt_type_description"]
+    debt_type.save()
+    return HttpResponse("debt_type updated!!!")
