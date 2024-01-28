@@ -1,0 +1,17 @@
+<!-- aym/control_payments/templates/control_payments_base.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Control Payments{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<h3>Hi {{ user.username }}!</h3>
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+</form>
+<h3>Control Payments - Application to control payments for fraternity expenses</h3>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

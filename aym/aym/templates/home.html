@@ -1,0 +1,31 @@
+<!-- aym/templates/home.html -->
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<h3>Hi {{ user.username }}!</h3>
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+</form>
+<p>MENU</p>
+<table>
+    <thead>
+        <tr>
+            <th>Aplications</th>
+            <th>About</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/control_payments">Control Payments</a></td>
+            <td>
+                <p>Application to control payments for fraternity expenses</p>
+            </td>
+        </tr>
+</table>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

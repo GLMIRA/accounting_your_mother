@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-7y$4ya-gf3j+bbtzfv=q6)40u+*0c234ym*qa(l(#jter9f+ln"
+SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = str(config("DJANGO_ALLOWED_HOSTS")).split(" ")
 
 
 # Application definition
@@ -55,7 +56,7 @@ ROOT_URLCONF = "aym.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [f"{BASE_DIR}/aym/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -68,18 +69,32 @@ TEMPLATES = [
     },
 ]
 
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
 WSGI_APPLICATION = "aym.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
+DATABASES_AVAILABLE = {
     "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": config("MYSQL_DATABASE"),
+        "USER": config("MYSQL_USER"),
+        "PASSWORD": config("MYSQL_PASSWORD"),
+        "HOST": config("MYSQL_HOST"),
+        "PORT": config("MYSQL_PORT"),
+    },
+    "tests": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
 }
+database = os.environ.get("DJANGO_DATABASE", "default")
+DATABASES = {"default": DATABASES_AVAILABLE[database]}
 
 
 # Password validation

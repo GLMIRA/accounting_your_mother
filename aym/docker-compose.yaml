@@ -1,0 +1,34 @@
+services:
+  aym:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    image: aym
+    container_name: aym_django
+    restart: always
+    ports:
+      - 8080:8080
+    command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:lts
+    container_name: aym_mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+    volumes:
+      - ../db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
