@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 from django.template import loader
-from .models import Resident, DebtType
+from .models import Resident, DebtType, Debts
 
 
 def index(request):
@@ -93,3 +93,15 @@ def debt_type_update(request: HttpRequest, debt_type_id: DebtType):
     debt_type.description = request.POST["debt_type_description"]
     debt_type.save()
     return HttpResponse("debt_type updated!!!")
+
+
+def debt_input(request: HttpRequest):
+    if request.method == "GET":
+        return render(request, "control_payments/debt/debt_input.html")
+    debt = Debts(
+        debt_type=DebtType.objects.get(name=request.POST["debt_type"]),
+        due_date=request.POST["due_date"],
+        debt_value=request.POST["value"],
+    )
+    debt.save()
+    return HttpResponse("new debt save")

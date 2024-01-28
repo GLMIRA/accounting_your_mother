@@ -20,4 +20,6 @@ urlpatterns = [
         views.debt_type_update,
         name="debt_typ/update",
     ),
+    path("debt/input", views.debt_input, name="debt/input"),
+    path("debt/all", views.debt_input, name="debt_all"),
 ]

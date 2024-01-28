@@ -1,0 +1,10 @@
+<h1>Show All Debt_type</h1>
+{% if debt_list %}
+<ul>
+    {% for debt in debt_list %}
+    <li><a href="update/{{debt.id}}">{{debt.description}}</a>, {{debt_type.active}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No debt type are available.</p>
+{% endif %}

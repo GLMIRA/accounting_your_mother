@@ -1,0 +1,13 @@
+<h1>From add a debt</h1>
+<form action="{% url 'control_payments:debt/input' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="debt_type">Debt_type</label>
+        <input type="text" name="debt_type" id="debt_type" required>
+        <label for="due_date">Due_date</label>
+        <input type="date" name="due_date" id="due_date" required>
+        <label for="value_debt">Value_debt:</label>
+        <input type="number" name="value" id="value_debt" min="0.00" max="99999.99">
+    </fieldset>
+    <input type="submit" value="submit">
+</form>
