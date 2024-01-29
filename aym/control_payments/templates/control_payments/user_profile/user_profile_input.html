@@ -3,6 +3,7 @@
 {% load static %}
 {% block content %}
 {{ block.super }}
+{% include "control_payments/includes/control-payments-header.html" %}
 <h5>Create a User Profile</h5>
 <form action="{% url 'control_payments:user_profile/input' %}" method="post">
     {% csrf_token %}

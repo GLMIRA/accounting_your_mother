@@ -4,65 +4,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+{% load static %}
 {{ block.super }}
-<p>MENU</p>
-<table>
-    <thead>
-        <tr>
-            <th>Topic</th>
-            <th>Content</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="2">User Profile</td>
-            <td><a href="user_profile/input">Create a Profile</a></td>
-        </tr>
-        <tr>
-            <td><a href="user_profile/all">List Profiles</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Debt Type / Apportionment Rules</td>
-            <td><a href="/">Create a Debt Type</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Debt Type</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Debt Type</td>
-            <td><a href="/">Create a Debt Type</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Debt Type</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Debts</td>
-            <td><a href="/">Create a Debts</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Debts</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Apportionment</td>
-            <td><a href="/">Create a Apportionment</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Apportionment</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Payment</td>
-            <td><a href="/">Create a Payment</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Payment</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td rowspan="2">Debt Collection</td>
-            <td><a href="/">Create a Debt Collection</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-        <tr>
-            <td><a href="/">List Debt Collection</a></td> <!--TODO: Acertar a URL-->
-        </tr>
-
-</table>
+{% include "control_payments/includes/control-payments-header.html" %}
+<div class="row d-flex justify-content-center align-items-center h-300">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <img src="{% static 'digital-payment.png' %}" alt="Control Payments logo" width="300" height="300">
+    </div>
+</div>
 {% endblock %}

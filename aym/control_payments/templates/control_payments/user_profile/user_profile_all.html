@@ -3,6 +3,7 @@
 {% load static %}
 {% block content %}
 {{ block.super }}
+{% include "control_payments/includes/control-payments-header.html" %}
 <h5>List of User Profiles</h5>
 {% if user_profile_list %}
 <table>

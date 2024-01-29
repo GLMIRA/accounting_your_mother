@@ -1,0 +1,58 @@
+<!-- aym/aym/templates/includes/site-header.html -->
+{% load static %}
+<header class="py-3 mb-3 border-bottom">
+    <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+        <div class="dropdown">
+            <a href="#"
+                class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-body-emphasis text-decoration-none dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'logo.jpg' %}" alt="Your Mother logo" class="rounded-circle" width="50" height="50">
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+                <li>
+                    <a class="dropdown-item" href="/" aria-current="page"
+                        alt="Application to control payments for fraternity expenses">Home</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="/control_payments" aria-current="page"
+                        alt="Application to control payments for fraternity expenses">Control Payments</a>
+                </li>
+                <!-- Exemplo de como implementar mais itens menu dropdown
+                <li><a class="dropdown-item active" href="#">Inventory</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Inventory</a></li>
+                -->
+            </ul>
+        </div>
+        <div class="d-flex align-items-center">
+            <form class="w-100 me-3" role="search">
+                <input type="search" class="form-control" placeholder="Search... (not implemented)" aria-label="Search">
+                <!-- TODO: Implementar a busca?-->
+            </form>
+
+            <div class="flex-shrink-0 dropdown">
+                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+
+                    <img src="{% static 'avatar.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small shadow">
+                    <li>
+                        <a class="dropdown-item" href="control_payments/user_profile/update/{{user.id}}">Profile</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">Sign out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
